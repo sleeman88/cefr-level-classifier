@@ -1,6 +1,6 @@
 document.getElementById('processButton').addEventListener('click', function() {
     const inputText = document.getElementById('inputText').value;
-
+    
     // Parse the HTML to extract color-coded words
     const parser = new DOMParser();
     const doc = parser.parseFromString(inputText, 'text/html');
@@ -36,7 +36,7 @@ document.getElementById('processButton').addEventListener('click', function() {
         // Determine the level based on color
         let level = 'other';
         for (let color in levelMapping) {
-            if (style.includes(color)) {
+            if (style && style.includes(color)) {
                 level = levelMapping[color];
                 break;
             }
