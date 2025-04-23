@@ -2,6 +2,11 @@ document.getElementById('processButton').addEventListener('click', function() {
     // Get the HTML content from the div
     const inputText = document.getElementById('inputText').innerHTML;
 
+    if (!inputText) {
+        document.getElementById('result').innerHTML = 'Please paste valid HTML content.';
+        return;
+    }
+
     // Parse the HTML to extract color-coded words
     const parser = new DOMParser();
     const doc = parser.parseFromString(inputText, 'text/html');
@@ -16,18 +21,6 @@ document.getElementById('processButton').addEventListener('click', function() {
         C2: [],
         naContent: [], // NA content words
         naOthers: [] // NA other words
-    };
-    
-    // Mapping colors and font-weight to corresponding levels
-    const levelMapping = {
-        '#32cd32': 'A1', // A1 color
-        '#32cd32; font-weight:bold': 'A2', // A2 color (A1 color + bold)
-        'blue': 'B1', // B1 color
-        'blue; font-weight:bold': 'B2', // B2 color (B1 color + bold)
-        'red': 'C1', // C1 color
-        'red; font-weight:bold': 'C2', // C2 color (C1 color + bold)
-        'orange': 'naContent', // NA content words
-        '': 'naOthers' // NA others (for unclassified words)
     };
 
     // Loop through all <span> tags and classify words based on color and font weight
