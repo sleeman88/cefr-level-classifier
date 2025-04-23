@@ -1,11 +1,6 @@
 document.getElementById('processButton').addEventListener('click', function() {
     // Get the HTML content from the div
     const inputText = document.getElementById('inputText').innerHTML;
-    
-    if (!inputText) {
-        document.getElementById('result').innerHTML = 'Please paste valid HTML content.';
-        return;
-    }
 
     // Parse the HTML to extract color-coded words
     const parser = new DOMParser();
