@@ -1,5 +1,6 @@
 document.getElementById('processButton').addEventListener('click', function() {
-    const inputText = document.getElementById('inputText').value;
+    // Get the HTML content from the div
+    const inputText = document.getElementById('inputText').innerHTML;
 
     // Parse the HTML to extract color-coded words
     const parser = new DOMParser();
