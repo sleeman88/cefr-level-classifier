@@ -1,10 +1,10 @@
 document.getElementById('processButton').addEventListener('click', function() {
     const inputText = document.getElementById('inputText').value;
     
-    // Parse the HTML to extract color-coded words
+    // Check if input is valid HTML
     const parser = new DOMParser();
     const doc = parser.parseFromString(inputText, 'text/html');
-    
+
     // Variables to classify words by level
     const levels = {
         A1: [],
