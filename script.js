@@ -63,4 +63,50 @@ document.getElementById('processButton').addEventListener('click', function() {
             level = 'naContent'; // NA content words
         }
 
-        // Add the word to the appropriate level if it's not already
+        // Add the word to the appropriate level if it's not already present (remove duplicates)
+        if (word && !levels[level].includes(word)) {
+            levels[level].push(word);
+        }
+    });
+
+    // Display the results in a table format (words separated by "/")
+    let resultHtml = '<table><tr><th>Level</th><th>Words</th></tr>';
+    
+    resultHtml += `
+        <tr>
+            <td>A1</td>
+            <td>${levels.A1.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>A2</td>
+            <td>${levels.A2.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>B1</td>
+            <td>${levels.B1.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>B2</td>
+            <td>${levels.B2.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>C1</td>
+            <td>${levels.C1.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>C2</td>
+            <td>${levels.C2.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>NA content words</td>
+            <td>${levels.naContent.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>NA other words</td>
+            <td>${levels.naOthers.join(' / ') || ''}</td>
+        </tr>
+    `;
+
+    resultHtml += '</table>';
+    document.getElementById('result').innerHTML = resultHtml || 'No matching words found.';
+});
