@@ -42,7 +42,7 @@ document.getElementById('processButton').addEventListener('click', function() {
         // If no color style is found, skip this span
         if (!color) return;
 
-        // Determine the level based on color and font-weight
+        // Match color to level
         let level = 'naOthers'; // Default level is 'NA others'
         if (color.includes('#32cd32') && style.includes('font-weight:bold')) {
             level = 'A2'; // A2 level (A1 color + bold)
@@ -57,53 +57,4 @@ document.getElementById('processButton').addEventListener('click', function() {
         } else if (color.includes('red')) {
             level = 'C1'; // C1 level
         } else if (color.includes('orange')) {
-            level = 'naContent'; // NA content words
-        }
-
-        // Add the word to the appropriate level
-        if (word) {
-            levels[level].push(word);
-        }
-    });
-
-    // Display the results in a table format (words separated by "/")
-    let resultHtml = '<table><tr><th>Level</th><th>Words</th></tr>';
-    
-    resultHtml += `
-        <tr>
-            <td>A1</td>
-            <td>${levels.A1.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>A2</td>
-            <td>${levels.A2.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>B1</td>
-            <td>${levels.B1.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>B2</td>
-            <td>${levels.B2.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>C1</td>
-            <td>${levels.C1.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>C2</td>
-            <td>${levels.C2.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>NA content words</td>
-            <td>${levels.naContent.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>NA other words</td>
-            <td>${levels.naOthers.join(' / ') || ''}</td>
-        </tr>
-    `;
-
-    resultHtml += '</table>';
-    document.getElementById('result').innerHTML = resultHtml || 'No matching words found.';
-});
+            level = 'na
