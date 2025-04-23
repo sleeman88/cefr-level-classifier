@@ -1,10 +1,10 @@
 document.getElementById('processButton').addEventListener('click', function() {
     const inputText = document.getElementById('inputText').value;
-    
-    // Check if input is valid HTML
+
+    // Parse the HTML to extract color-coded words
     const parser = new DOMParser();
     const doc = parser.parseFromString(inputText, 'text/html');
-
+    
     // Variables to classify words by level
     const levels = {
         A1: [],
@@ -13,7 +13,8 @@ document.getElementById('processButton').addEventListener('click', function() {
         B2: [],
         C1: [],
         C2: [],
-        other: []  // "Other" category for unclassified words
+        naContent: [], // NA content words
+        naOthers: [] // NA other words
     };
     
     // Mapping colors to corresponding levels
@@ -24,7 +25,8 @@ document.getElementById('processButton').addEventListener('click', function() {
         'blue; font-weight:bold': 'B2', // B2 color
         'red': 'C1', // C1 color
         'red; font-weight:bold': 'C2', // C2 color
-        'orange': 'other' // Other color
+        'orange': 'naContent', // NA content words
+        '': 'naOthers' // NA others
     };
 
     // Loop through all <span> tags and classify words based on color
@@ -34,7 +36,7 @@ document.getElementById('processButton').addEventListener('click', function() {
         const word = span.textContent.trim();
 
         // Determine the level based on color
-        let level = 'other';
+        let level = 'naOthers'; // Default level is 'NA others'
         for (let color in levelMapping) {
             if (style && style.includes(color)) {
                 level = levelMapping[color];
@@ -77,8 +79,12 @@ document.getElementById('processButton').addEventListener('click', function() {
             <td>${levels.C2.join(' / ') || ''}</td>
         </tr>
         <tr>
-            <td>Other</td>
-            <td>${levels.other.join(' / ') || ''}</td>
+            <td>NA content words</td>
+            <td>${levels.naContent.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>NA other words</td>
+            <td>${levels.naOthers.join(' / ') || ''}</td>
         </tr>
     `;
 
