@@ -1,66 +1,93 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+document.getElementById('processButton').addEventListener('click', function() {
+    const inputText = document.getElementById('inputText').value;
 
-.container {
-    text-align: center;
-    max-width: 900px;
-    width: 100%;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+    // Parse the HTML to extract color-coded words
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(inputText, 'text/html');
+    
+    // Variables to classify words by level
+    const levels = {
+        A1: [],
+        A2: [],
+        B1: [],
+        B2: [],
+        C1: [],
+        C2: [],
+        naContent: [], // NA content words
+        naOthers: [] // NA other words
+    };
+    
+    // Mapping colors to corresponding levels
+    const levelMapping = {
+        '#32cd32': 'A1', // A1 color
+        '#32cd32; font-weight:bold': 'A2', // A2 color
+        'blue': 'B1', // B1 color
+        'blue; font-weight:bold': 'B2', // B2 color
+        'red': 'C1', // C1 color
+        'red; font-weight:bold': 'C2', // C2 color
+        'orange': 'naContent', // NA content words
+        '': 'naOthers' // NA others
+    };
 
-textarea {
-    margin-bottom: 20px;
-    width: 80%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
+    // Loop through all <span> tags and classify words based on color
+    const spans = doc.querySelectorAll('span');
+    spans.forEach(span => {
+        const style = span.getAttribute('style');
+        const word = span.textContent.trim();
 
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        // Determine the level based on color
+        let level = 'naOthers'; // Default level is 'NA others'
+        for (let color in levelMapping) {
+            if (style && style.includes(color)) {
+                level = levelMapping[color];
+                break;
+            }
+        }
 
-button:hover {
-    background-color: #45a049;
-}
+        // Classify the word by its level
+        if (word) {
+            levels[level].push(word);
+        }
+    });
 
-#result {
-    margin-top: 20px;
-    font-size: 18px;
-    text-align: left;
-}
+    // Display the results in a table format (words separated by "/")
+    let resultHtml = '<table><tr><th>Level</th><th>Words</th></tr>';
+    
+    resultHtml += `
+        <tr>
+            <td>A1</td>
+            <td>${levels.A1.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>A2</td>
+            <td>${levels.A2.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>B1</td>
+            <td>${levels.B1.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>B2</td>
+            <td>${levels.B2.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>C1</td>
+            <td>${levels.C1.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>C2</td>
+            <td>${levels.C2.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>NA content words</td>
+            <td>${levels.naContent.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>NA other words</td>
+            <td>${levels.naOthers.join(' / ') || ''}</td>
+        </tr>
+    `;
 
-table {
-    width: 50%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-table th,
-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
+    resultHtml += '</table>';
+    document.getElementById('result').innerHTML = resultHtml || 'No matching words found.';
+});
