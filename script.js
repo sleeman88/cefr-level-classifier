@@ -33,14 +33,21 @@ document.getElementById('processButton').addEventListener('click', function() {
     // Loop through all <span> tags and classify words based on color
     const spans = doc.querySelectorAll('span');
     spans.forEach(span => {
+        // Get the style attribute, but ignore background color
         const style = span.getAttribute('style');
         const word = span.textContent.trim();
 
+        // Only consider the color style, ignoring background-color or other styles
+        let color = style ? style.split(';').find(s => s.includes('color')) : '';
+        
+        // If no color style is found, skip this span
+        if (!color) return;
+
         // Determine the level based on color
         let level = 'naOthers'; // Default level is 'NA others'
-        for (let color in levelMapping) {
-            if (style && style.includes(color)) {
-                level = levelMapping[color];
+        for (let colorKey in levelMapping) {
+            if (color && color.includes(colorKey)) {
+                level = levelMapping[colorKey];
                 break;
             }
         }
@@ -65,30 +72,3 @@ document.getElementById('processButton').addEventListener('click', function() {
         </tr>
         <tr>
             <td>B1</td>
-            <td>${levels.B1.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>B2</td>
-            <td>${levels.B2.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>C1</td>
-            <td>${levels.C1.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>C2</td>
-            <td>${levels.C2.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>NA content words</td>
-            <td>${levels.naContent.join(' / ') || ''}</td>
-        </tr>
-        <tr>
-            <td>NA other words</td>
-            <td>${levels.naOthers.join(' / ') || ''}</td>
-        </tr>
-    `;
-
-    resultHtml += '</table>';
-    document.getElementById('result').innerHTML = resultHtml || 'No matching words found.';
-});
