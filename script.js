@@ -1,6 +1,6 @@
 document.getElementById('processButton').addEventListener('click', function() {
     const inputText = document.getElementById('inputText').value;
-    
+
     // Parse the HTML to extract color-coded words
     const parser = new DOMParser();
     const doc = parser.parseFromString(inputText, 'text/html');
@@ -13,7 +13,7 @@ document.getElementById('processButton').addEventListener('click', function() {
         B2: [],
         C1: [],
         C2: [],
-        other: []
+        other: []  // "Other" category for unclassified words
     };
     
     // Mapping colors to corresponding levels
@@ -48,7 +48,7 @@ document.getElementById('processButton').addEventListener('click', function() {
         }
     });
 
-    // Display the results in a horizontal table format
+    // Display the results in a table format (words separated by "/")
     let resultHtml = '<table><tr><th>Level</th><th>Words</th></tr>';
     
     resultHtml += `
@@ -75,6 +75,10 @@ document.getElementById('processButton').addEventListener('click', function() {
         <tr>
             <td>C2</td>
             <td>${levels.C2.join(' / ') || ''}</td>
+        </tr>
+        <tr>
+            <td>Other</td>
+            <td>${levels.other.join(' / ') || ''}</td>
         </tr>
     `;
 
